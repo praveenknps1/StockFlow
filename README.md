@@ -21,6 +21,11 @@ npm install
 npm run dev               # http://localhost:5173 (proxies /api to :5000)
 ```
 
+For production frontend builds, `client/.env.production` sets the API URL. If the
+backend URL changes, update that value or set `VITE_API_BASE_URL` in the frontend
+host's environment and redeploy. The API allows the configured `CLIENT_ORIGIN`
+and this app's Vercel deployment/preview origins.
+
 ## How the requirements map to code
 
 | Requirement | Where |

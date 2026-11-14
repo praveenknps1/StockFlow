@@ -17,8 +17,22 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const app = express();
 
+const allowedClientOrigins = new Set(
+  (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+);
+const stockFlowVercelOrigin =
+  /^https:\/\/stockflow-[a-z0-9-]+(?:-praveens-projects-4617ad2d)?\.vercel\.app$/i;
+
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173'
+  origin(origin, callback) {
+    callback(
+      null,
+      !origin || allowedClientOrigins.has(origin) || stockFlowVercelOrigin.test(origin)
+    );
+  }
 }));
 
 app.use(express.json());
